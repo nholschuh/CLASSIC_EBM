@@ -1,0 +1,88 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper, left=2.2cm, top=1.5cm, right=2.2cm, bottom=1.5cm]{geometry}
+\usepackage{times, graphicx, amsmath}
+\usepackage{url, multirow, color}
+\usepackage[hidelinks]{hyperref}
+\usepackage[font=small,labelfont=bf]{caption}
+
+% \usepackage{titlesec}
+% \titleformat{\section}{\normalfont\Large\bfseries}{Question~\thesection}{1em}{}
+
+\renewcommand{\floatpagefraction}{0.95}
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+
+
+\begin{document}
+\thispagestyle{empty}
+
+\title{Derivation of steady-state solution for $D(x_s)$ ($n\leq 4$)}
+\author{Jake Aylmer}
+\maketitle
+
+\normalsize
+\noindent
+The steady state solutions are given by
+\begin{equation}\label{eq:steadystatesolutions}
+L_nT_n + \delta_{0n}A = QH_n
+\end{equation}
+where $L_n = n(n+1)D+B$ and
+\begin{equation}\label{eq:Hn}
+H_n = H_n(x_s) = (2n+1)\int_0^1 P_n(x)a(x,x_s)S(x)dx \equiv (2n+1)J_n(x_s).
+\end{equation}
+Rearranging (\ref{eq:steadystatesolutions}) and multiplying by $P_n(x)$:
+\begin{equation}\label{rearrange1}
+T_nP_n = \frac{QH_n - \delta_{0n}A}{L_n}P_n(x)
+\end{equation}
+\begin{equation}\label{eq:takesum}
+\implies T(x) = \sum_{n\textrm{ even}} T_nP_n(x) = \sum_{n\textrm{ even}}\frac{QH_n - \delta_{0n}A}{L_n}P_n(x) = \sum_{n\textrm{ even}}\frac{QH_nP_n(x)}{L_n} - \frac{A}{B}.
+\end{equation}
+
+\noindent
+Truncating at $n=4$:
+\begin{align*}\label{eq:truncate}
+T(x) &= Q\left( \frac{H_0P_0(x)}{L_0} + \frac{H_2P_2(x)}{L_2} + \frac{H_4P_4(x)}{L_4}\right) - \frac{A}{B} \\
+&= Q\left(\frac{J_0}{B} + \frac{5J_2P_2(x)}{6D+B} + \frac{9J_4P_4}{20D+B}\right) - \frac{A}{B}
+\end{align*}
+Evaluating at $x=x_s$:
+\begin{equation*}
+T_s = Q \frac{J_0(6D+B)(20D+B) + 5J_2P_2B(20D+B) + 9J_4P_4B(6D+B)}{B(6D+B)(20D+B)} - \frac{A}{B}
+\end{equation*}
+where $P_m = P_m(x_s)$ and $J_m = J_m(x_s)$ is implied. Rearranging gives
+\begin{equation*}
+\frac{A+BT_s}{Q}(20D+B)(6D+B) = J_0(6D+B)(20D+B) + 5J_2P_2B(20D+B) + 9J_4P_4B(6D+B),
+\end{equation*}
+which is a quadratic in $D$. Using $(20D+B)(6D+B) \equiv 120D^2 + 26BD + B^2$ and collecting terms with common factors of $D^2$, $D$ and $D^0$:
+\begin{align*}
+120\left( \frac{A+BT_s}{Q} - J_0 \right) D^2 &+ \left( \frac{26B(A+BT_s)}{Q} - 26BJ_0 - 100BJ_2P_2 - 54BJ_4P_4 \right) D + ... \\
+... &+ \left( \frac{B^2(A+BT_s)}{Q} - B^2J_0 - 5B^2J_2P_2 - 9B^2J_4P_4 \right) = 0
+\end{align*}
+
+\clearpage
+\noindent
+This gives the solution for $D(x_s)$ as
+\begin{equation}\label{eq:solution}
+D(x_s) = \frac{- \beta \pm \sqrt{\beta^2 - 4\alpha \gamma}}{2\alpha},
+\end{equation}
+where
+\begin{align*}
+&\alpha = 120\left( \frac{A+BT_s}{Q} - J_0 \right) \\
+&\beta = 2B\left( 13\left( \frac{A+BT_s}{Q} - J_0\right)  - 50J_2P_2 - 27J_4P_4 \right) \\
+&\gamma = B^2\left( \frac{A+BT_s}{Q} - J_0 - 5J_2P_2 - 9J_4P_4 \right).
+\end{align*}
+
+%\vspace{5mm}
+%\large
+%\textbf{Physical solutions - conditions}
+%\normalsize
+%\vspace{5mm}
+
+%We require $D>0$, or
+%\begin{equation}\label{eq:condition1}
+%\frac{-\beta \pm \sqrt{\beta^2 -4\alpha \gamma}}{2\alpha} > 0
+%\end{equation}
+
+
+\end{document}
