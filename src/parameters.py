@@ -8,6 +8,7 @@
 from __future__ import division
 import numpy as np
 
+RE = 6371000.0 # Mean radius of Earth [m]
 
 A = 203.3 # OLR expansion constant term [W m^-2]
 B = 2.09 # OLR expansion linear term [W m^-2 degC^-1]

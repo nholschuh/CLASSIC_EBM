@@ -56,6 +56,25 @@ def StandardPlot(xi, norm_Q_arrays, relative_D, cols=['k']):
     return FormatAxis(fig, ax, minorgrid=False)
 
 
+def PlotHeatTransport(x, HT, xi):
+    """Plot the zonally integrated heat transport in PW over the hemisphere for
+    a given solution to the EBM (note that heat transports are input to this
+    function in W, which are then converted to PW automatically).
+    
+    --Args--
+    x  : (NumPy) array, containing x-coordinates between 0 and 1.
+    HT : (NumPy) array, containing Heat transports [W] at each x coordinate.
+    xi : float, sine of ice-edge latitude.
+    """
+    fig, ax = plt.subplots()
+    ax.axvline(xi, linestyle='--', label=r'$y_\mathrm{i}$')
+    ax.plot(x, HT/(1E15), color='k')
+    ax.set_xlim([0,1])
+    ax.set_xlabel(r'$y=\sin \phi$')
+    ax.set_ylabel(r'Poleward Heat Transport (PW)')
+    return FormatAxis(fig, ax, minorgrid=False)
+
+
 ###############################################################################
 
 def FormatAxis(fig, ax, ticksize=18, tickpad=8, gridon=True, minorgrid=True):

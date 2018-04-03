@@ -12,18 +12,18 @@ from src import parameters as pm, analytics as an
 from src import plotting as pl
 
 
-def main(xi=0.9, smooth_coalbedo=False):
+def main(smooth_coalbedo=False):
     
-    x = np.arange(0.0, 1.001, 0.01)
-    HT = np.zeros(len(x))
+    xi = np.arange(0.0, 1.001, 0.01)
+    Q = np.zeros(len(xi))
     
     print "Using %s-coalbedo..." % ('smoothed' if smooth_coalbedo else 
         'step-function')
     
-    for k in xrange(len(x)):
-        HT[k] = an.HeatTransport(x[k], xi, smooth_coalbedo=smooth_coalbedo)
+    for k in xrange(len(Q)):
+        Q[k] = an.Q(xi[k], smooth_coalbedo=smooth_coalbedo)
     
-    fig, ax = pl.PlotHeatTransport(x, HT, xi)
+    fig, ax = pl.StandardPlot(xi, np.array([Q])/pm.Q, np.array([1]))
     fig.show()
     
     pass
