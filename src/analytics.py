@@ -97,7 +97,7 @@ def Q(xi, D=pm.D, smooth_coalbedo=False):
     """
     sumterm = 0
     for n in xrange(0, pm.nmax+2, 2):
-        Hn = Hn_smooth(n, xi) if smooth_coalbedo else Hn_step_coalbedo(n, xi)
+        Hn = Hn_smooth_coalbedo(n, xi) if smooth_coalbedo else Hn_step_coalbedo(n, xi)
         sumterm += Hn*spec.legendre(n)(xi)/Ln(n, D)
     
     return (pm.A + pm.B*pm.T_ice_edge) / (pm.B*sumterm)
