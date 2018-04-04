@@ -31,8 +31,9 @@ def main(f=0.7, smooth_coalbedo=False):
     
     fig, ax = pl.StabilityPlot(xi, Q_arrays/pm.Q, relative_D, ['grey', 'k'])
     ax.legend(loc='upper right')
-    fileIO.SaveFigures([fig], 'change_D_to_%.2fD0' % f)
-    fileIO.SaveFigures([fig], 'change_D_to_%.2fD0' % f, '.svg')
+    subdir_name =('change_D_to_%.2fD0'%f)+('_SmoothedCoalbedo'*smooth_coalbedo)
+    fileIO.SaveFigures([fig], subdir_name)
+    fileIO.SaveFigures([fig], subdir_name, '.svg')
     fig.show()
     
     pass
@@ -40,10 +41,14 @@ def main(f=0.7, smooth_coalbedo=False):
 
 if __name__ == '__main__':
     pl.SetRCParams()
-    if len(sys.argv)>1:
+    if len(sys.argv)==3:
         try:
-            main(f=float(sys.argv[1]))
+            main(float(sys.argv[1]), (sys.argv[2]=='smooth_coalbedo'))
         except:
             main()
+    elif len(sys.argv)==2 and sys.argv[1]=='smooth_coalbedo':
+        main(smooth_coalbedo=True)
+    elif len(sys.argv)==2:
+        main(float(sys.argv))
     else:
         main()

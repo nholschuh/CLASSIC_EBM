@@ -30,8 +30,9 @@ def main(xi=0.9, smooth_coalbedo=False):
     
     fig1, ax1 = pl.PlotHeatTransport(x, HT, xi)
     fig2, ax2 = pl.PlotHeatFluxConvergence(x, HFC, xi)
-    fileIO.SaveFigures([fig1, fig2], 'StandardHeatTransports')
-    fileIO.SaveFigures([fig1, fig2], 'StandardHeatTransports', '.svg')
+    subdir_name = 'StandardHeatTransports'+('_SmoothCoalbedo'*smooth_coalbedo)
+    fileIO.SaveFigures([fig1, fig2], subdir_name)
+    fileIO.SaveFigures([fig1, fig2], subdir_name, '.svg')
     fig1.show()
     fig2.show()
     

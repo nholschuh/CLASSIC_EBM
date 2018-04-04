@@ -14,10 +14,13 @@ from src import plotting as pl, fileIO
 
 def main(smooth_coalbedo=False):
     
-    fig, ax = pl.PlotHFCIceEdge()
-    fileIO.SaveFigures([fig], 'HFCIceEdgeStandardD')
-    fileIO.SaveFigures([fig], 'HFCIceEdgeStandardD', '.svg')
-    fig.show()
+    fig1, ax1 = pl.PlotHFCIceEdge(smooth_coalbedo=smooth_coalbedo)
+    fig2, ax2 = pl.PlotHFCIceEdge(relative_D=np.array([1.0]),
+        smooth_coalbedo=smooth_coalbedo, add_linear_fit=True)
+    subdir_name = 'HFCIceEdge' + ('_SmoothedCoalbedo'*smooth_coalbedo)
+    fileIO.SaveFigures([fig1, fig2], subdir_name)
+    fileIO.SaveFigures([fig1, fig2], subdir_name, '.svg')
+    fig1.show(); fig2.show()
     
     pass
 

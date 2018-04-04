@@ -24,8 +24,9 @@ def main(smooth_coalbedo=False):
         Q[k] = an.Q(xi[k], smooth_coalbedo=smooth_coalbedo)
     
     fig, ax = pl.StabilityPlot(xi, np.array([Q])/pm.Q, np.array([1]))
-    fileIO.SaveFigures([fig], 'StandardCase')
-    fileIO.SaveFigures([fig], 'StandardCase', '.svg')
+    subdir_name = 'StandardCase' + ('_SmoothedCoalbedo'*smooth_coalbedo)
+    fileIO.SaveFigures([fig], subdir_name)
+    fileIO.SaveFigures([fig], subdir_name, '.svg')
     fig.show()
     
     pass
