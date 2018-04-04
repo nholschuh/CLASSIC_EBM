@@ -93,7 +93,7 @@ def Q(xi, D=pm.D, smooth_coalbedo=False):
     xi                : float, sine of ice-edge latitude [dimensionless].
     (D)               : float, the large-scale constant diffusivity
                         [W m^-2 degC^-1]
-    (smooth_coalbedo) : bool, whether to use the smoothed albedo function.
+    (smooth_coalbedo) : bool, whether to use the smoothed coalbedo function.
     """
     sumterm = 0
     for n in xrange(0, pm.nmax+2, 2):
@@ -106,22 +106,37 @@ def Q(xi, D=pm.D, smooth_coalbedo=False):
 def HeatFluxConvergence(x, xi, Q=pm.Q, D=pm.D, smooth_coalbedo=False):
     """Calculate the steady-state heat flux convergence (HFC) [W m^-2] at
     location x.
+    
+    --Args--
+    x                 : float, sine of latitude at which to calculate HFC.
+    xi                : float, sine of ice-edge latitude.
+    (Q)               : float, solar constant divided by 4 [W m^-2].
+    (D)               : float, large-scale constant diffusivity
+                        [W m^-2 degC^-1].
+    (smooth_coalbedo) : bool, whether to use the smoothed coalbedo function.
     """
     sumterm_ddx = 0; sumterm_ddx2 = 0
     for n in xrange(0, pm.nmax+2, 2):
         T_n = Tn(n, xi, Q, D, smooth_coalbedo)
         sumterm_ddx += T_n * np.polyder(spec.legendre(n), m=1)(x)
         sumterm_ddx2 += T_n * np.polyder(spec.legendre(n), m=2)(x)
-    return -D * ( (1-x**2)*sumterm_ddx2 - 2*x*sumterm_ddx )
+    return D * ( (1-x**2)*sumterm_ddx2 - 2*x*sumterm_ddx )
 
 
 def HeatTransport(x, xi, Q=pm.Q, D=pm.D, smooth_coalbedo=False):
-    """
-    Calculate the heat transport [W] at location x.
-    """
+    """Calculate the steady-state zonally-integrated heat transport [W] at
+    location x.
     
-    sumterm_ddx = 0
+    --Args--
+    x                 : float, sine of latitude at which to calculate HFC.
+    xi                : float, sine of ice-edge latitude.
+    (Q)               : float, solar constant divided by 4 [W m^-2].
+    (D)               : float, large-scale constant diffusivity
+                        [W m^-2 degC^-1].
+    (smooth_coalbedo) : bool, whether to use the smoothed coalbedo function.
+    """
+    sumterm = 0 # sum from n=0 to n=nmax (n even), of T_n*(d/dx)P_n
     for n in xrange(0, pm.nmax+2, 2):
         T_n = Tn(n, xi, Q, D, smooth_coalbedo)
-        sumterm_ddx += T_n*np.polyder(spec.legendre(n), m=1)(x)
-    return -(1-x**2)*sumterm_ddx*(2*np.pi*D*pm.RE**2)
+        sumterm += T_n*np.polyder(spec.legendre(n), m=1)(x)
+    return -2*np.pi*D*pm.RE**2*(1-x**2)*sumterm
