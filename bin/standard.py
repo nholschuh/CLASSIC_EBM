@@ -23,7 +23,7 @@ def main(smooth_coalbedo=False):
     for k in xrange(len(Q)):
         Q[k] = an.Q(xi[k], smooth_coalbedo=smooth_coalbedo)
     
-    fig, ax = pl.StandardPlot(xi, np.array([Q])/pm.Q, np.array([1]))
+    fig, ax = pl.StabilityPlot(xi, np.array([Q])/pm.Q, np.array([1]))
     fig.show()
     
     pass

@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib as mpl, matplotlib.pyplot as plt
 
 
-def StandardPlot(xi, norm_Q_arrays, relative_D, cols=['k']):
+def StabilityPlot(xi, norm_Q_arrays, relative_D, cols=['k']):
     """Generate a plot of x_i against Q given multiple data sets for different
     values of D. Plots are added with labels so that a legend may be added to 
     the returned MatPlotLib axis object if desired. (Returns (fig, ax)).
@@ -93,6 +93,37 @@ def PlotHeatFluxConvergence(x, HFC, xi):
     ax.set_xlim([0,1])
     ax.set_xlabel(r'$y=\sin \phi$')
     ax.set_ylabel(r'Heat flux convergence (Wm$^{-2}$)')
+    return FormatAxis(fig, ax, minorgrid=False)
+
+
+def PlotHFCIceEdge(relative_D=np.array([0.75,1.0,1.25]), smooth_coalbedo=False):
+    """Plot the heat flux convergence (HFC) at the ice edge as the ice edge
+    varies (i.e. HFC(x=xi) vs xi) for each value of D = relative_D * D0 where
+    D0 is standard value (set in the parameters file). Calculations are done
+    here and the MatPlotLib figure and axis objects (fig, ax) are returned.
+    
+    --Args--
+    (relative_D)      : (NumPy) array of values of D to be used in units of D0.
+    (smooth_coalbedo) : bool, whether to use the smoothed coalbedo function.
+    """
+    
+    xi = np.arange(0.0, 1.001, 0.01)
+    HFC = np.zeros( (len(relative_D), len(xi)) )
+    
+    for j in xrange(len(relative_D)):
+        for k in xrange(len(xi)):
+            Q = an.Q(xi[k], pm.D*relative_D[j], smooth_coalbedo)
+            HFC[j][k] = an.HeatFluxConvergence(xi[k], xi[k], Q,
+                pm.D*relative_D[j], smooth_coalbedo)
+    
+    fig, ax = plt.subplots()
+    ax.axhline(0, color=[.2,.2,.2], linewidth=0.8)
+    for j in xrange(len(relative_D)):
+        ax.plot(xi, HFC[j], label=r'$D/D_0=%.2f$' % relative_D[j])
+    ax.set_xlim([0,1])
+    ax.set_xlabel(r'Ice edge position, $y_\mathrm{i}=\sin\phi_\mathrm{i}$')
+    ax.set_ylabel(r'Heat flux convergence (W m$^{-2}$)')
+    ax.legend(loc='upper left', fontsize=16)
     return FormatAxis(fig, ax, minorgrid=False)
 
 

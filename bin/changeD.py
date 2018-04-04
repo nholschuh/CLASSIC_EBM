@@ -29,7 +29,7 @@ def main(f=0.7, smooth_coalbedo=False):
             Q_arrays[k][j] = an.Q(xi[j], D=relative_D[k]*pm.D, 
                 smooth_coalbedo=smooth_coalbedo)
     
-    fig, ax = pl.StandardPlot(xi, Q_arrays/pm.Q, relative_D, ['grey', 'k'])
+    fig, ax = pl.StabilityPlot(xi, Q_arrays/pm.Q, relative_D, ['grey', 'k'])
     ax.legend(loc='upper right')
     fig.show()
     
