@@ -10,7 +10,7 @@ from __future__ import division
 import sys, os, numpy as np, matplotlib.pyplot as plt
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from src import parameters as pm, analytics as an
+from src import parameters as pm, analytics as an, fileIO
 from src import plotting as pl
 
 
@@ -31,6 +31,8 @@ def main(f=0.7, smooth_coalbedo=False):
     
     fig, ax = pl.StabilityPlot(xi, Q_arrays/pm.Q, relative_D, ['grey', 'k'])
     ax.legend(loc='upper right')
+    fileIO.SaveFigures([fig], 'change_D_to_%.2fD0' % f)
+    fileIO.SaveFigures([fig], 'change_D_to_%.2fD0' % f, '.svg')
     fig.show()
     
     pass

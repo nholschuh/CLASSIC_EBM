@@ -11,7 +11,7 @@ import sys, os, numpy as np, matplotlib.pyplot as plt
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from src import parameters as pm, analytics as an
-from src import plotting as pl
+from src import plotting as pl, fileIO
 
 
 def main(xi=0.9, smooth_coalbedo=False):
@@ -30,6 +30,8 @@ def main(xi=0.9, smooth_coalbedo=False):
     
     fig1, ax1 = pl.PlotHeatTransport(x, HT, xi)
     fig2, ax2 = pl.PlotHeatFluxConvergence(x, HFC, xi)
+    fileIO.SaveFigures([fig1, fig2], 'StandardHeatTransports')
+    fileIO.SaveFigures([fig1, fig2], 'StandardHeatTransports', '.svg')
     fig1.show()
     fig2.show()
     

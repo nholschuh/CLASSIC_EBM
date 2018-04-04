@@ -9,12 +9,14 @@ from __future__ import division
 import sys, os, numpy as np, matplotlib.pyplot as plt
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from src import plotting as pl
+from src import plotting as pl, fileIO
 
 
 def main(smooth_coalbedo=False):
     
     fig, ax = pl.PlotHFCIceEdge()
+    fileIO.SaveFigures([fig], 'HFCIceEdgeStandardD')
+    fileIO.SaveFigures([fig], 'HFCIceEdgeStandardD', '.svg')
     fig.show()
     
     pass

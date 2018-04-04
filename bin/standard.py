@@ -9,7 +9,7 @@ import sys, os, numpy as np, matplotlib.pyplot as plt
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from src import parameters as pm, analytics as an
-from src import plotting as pl
+from src import fileIO, plotting as pl
 
 
 def main(smooth_coalbedo=False):
@@ -24,6 +24,8 @@ def main(smooth_coalbedo=False):
         Q[k] = an.Q(xi[k], smooth_coalbedo=smooth_coalbedo)
     
     fig, ax = pl.StabilityPlot(xi, np.array([Q])/pm.Q, np.array([1]))
+    fileIO.SaveFigures([fig], 'StandardCase')
+    fileIO.SaveFigures([fig], 'StandardCase', '.svg')
     fig.show()
     
     pass
