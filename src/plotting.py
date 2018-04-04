@@ -99,7 +99,8 @@ def PlotHeatFluxConvergence(x, HFC, xi):
     return FormatAxis(fig, ax, minorgrid=False)
 
 
-def PlotHFCIceEdge(relative_D=np.array([0.75,1.0,1.25]), smooth_coalbedo=False):
+def PlotHFCIceEdge(relative_D=np.array([0.75,1.0,1.25]), smooth_coalbedo=False,
+    add_linear_fit=False):
     """Plot the heat flux convergence (HFC) at the ice edge as the ice edge
     varies (i.e. HFC(x=xi) vs xi) for each value of D = relative_D * D0 where
     D0 is standard value (set in the parameters file). Calculations are done
@@ -108,6 +109,7 @@ def PlotHFCIceEdge(relative_D=np.array([0.75,1.0,1.25]), smooth_coalbedo=False):
     --Args--
     (relative_D)      : (NumPy) array of values of D to be used in units of D0.
     (smooth_coalbedo) : bool, whether to use the smoothed coalbedo function.
+    (add_linear_fit)  : bool, if True, adds a linear fit to the first data set.
     """
     
     xi = np.arange(0.0, 1.001, 0.01)
@@ -121,13 +123,23 @@ def PlotHFCIceEdge(relative_D=np.array([0.75,1.0,1.25]), smooth_coalbedo=False):
     
     fig, ax = plt.subplots()
     ax.axhline(0, color=[.2,.2,.2], linewidth=0.8)
-    for j in xrange(len(relative_D)):
+    firstplot = ax.plot(xi, HFC[0], label=r'$D/D_0=%.2f$' % relative_D[0])
+    
+    if add_linear_fit:
+        a = np.argmin(abs(xi-pm.xi_HFC_lim1)) # index of lowest xi to fit to
+        b = np.argmin(abs(xi-pm.xi_HFC_lim2)) # index of upper xi to fit to
+        fit = np.polyfit(xi[a:b], HFC[0][a:b], 1)
+        ax.plot(xi[a:b], fit[1]+fit[0]*xi[a:b], linestyle='--',
+            color=firstplot[0].get_color() )
+    
+    for j in xrange(1, len(relative_D)):
         ax.plot(xi, HFC[j], label=r'$D/D_0=%.2f$' % relative_D[j])
     ax.set_xlim([0,1])
     ax.set_xlabel(r'Ice edge position, $y_\mathrm{i}=\sin\phi_\mathrm{i}$')
     ax.set_ylabel(r'Heat flux convergence (W m$^{-2}$)')
     ax.legend(loc='upper left', fontsize=16)
-    fig.canvas.set_window_title('HeatFluxConvergenceIceEdge')
+    fig.canvas.set_window_title(
+        'HeatFluxConvergenceIceEdge' + '_Multiple'*(len(relative_D)>1))
     return FormatAxis(fig, ax, minorgrid=False)
 
 

@@ -22,7 +22,7 @@ b0 = 0.38
 ai = 0.38 # [dimensionless]
 af = 0.70 # [dimensionless]
 
-delta_x = 0.3 # width of smoothing of co-albedo [dimensionless]
+delta_x = 0.05 # width of smoothing of co-albedo [dimensionless]
 
 S2 = -0.482 # Coefficient of degree-2 Legendre polynomial in spatial
             # distribution of solar radiation [dimensionless]
@@ -40,19 +40,12 @@ C = 0.16*B # effective heat capacity [W yr m^-2 degC^-1]
 ### ANALYTIC SOLUTION PARAMETERS ###
 nmax = 6 # expansion index to truncate (see North et. al. 1981 equation (25))
 
-
-### NUMERICAL SOLUTION PARAMETERS ###
-T_equator_0 = 25 # initial equatorial temperature [degC]
-xi_0 = 0.9 # initial sine of ice-edge latitude [dimensionless]
-
-nbox = 100 # number of grid boxes to use (in x-space, with T defined at centres)
-theta = 0.5 # parameter to determine which scheme to use for the diffusion eqn.
-dt = 1/365 # time step [years]
-tolerance = 0.01 # T-profile change for which steady-state may be assumed [degC]
-
-
 ### PLOTTING PARAMETERS ###
 Q_min = 0.8 # default minimum extent to plot Q [units of default Q value]
 Q_max = 1.4 # default maximum extent to plot Q [units of default Q value]
 x_min = -0.05 # default minimum extent to plot x [dimensionless]
 x_max = 1.05 # default maximum extent to plot x [dimensionless]
+
+# In plotting HFC(xi), fit linear line between these limits:
+xi_HFC_lim1 = 0.20
+xi_HFC_lim2 = 0.85
