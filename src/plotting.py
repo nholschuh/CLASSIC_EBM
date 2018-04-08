@@ -57,6 +57,24 @@ def StabilityPlot(xi, norm_Q_arrays, relative_D, cols=['k']):
     return FormatAxis(fig, ax, minorgrid=False)
 
 
+def PlotTemperature(x, T, xi):
+    """"""
+    fig, ax1 = plt.subplots()
+    ax1.axvline(xi, linestyle='--', color='b')
+    ax1.plot(x, T, color='k')
+    
+    ax2 = ax1.twiny()
+    ax2.set_xticks( np.sin((np.pi/180)*np.arange(0, 90.1, 10)) )
+    ax2.set_xticklabels( np.arange(0, 90, 10) )
+    
+    ax1.set_xlabel(r'$y=\sin \phi$')
+    ax1.set_ylabel(r'Surface temperature, $T$ ($^\circ$C)')
+    ax2.set_xlabel(r'Latitude, $\phi$ (deg)', y=2)
+    ax2.tick_params(axis='both', which='both', direction='out')
+    ax2.tick_params(axis='both', which='major', labelsize=17, pad=0)
+    return FormatAxis(fig, ax1, minorgrid=False)
+
+
 def PlotHeatTransport(x, HT, xi):
     """Plot the zonally integrated heat transport in PW over the hemisphere for
     a given solution to the EBM (note that heat transports are input to this
