@@ -4,12 +4,6 @@
 ##GENERAL##
 *.pyc
 
-*.png
-*.bmp
-*.gif
-*.docx
-*.xmls
-
 *.aux
 *.log
 *.out

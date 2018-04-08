@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper, left=2.2cm, top=1.5cm, right=2.2cm, bottom=1.5cm]{geometry}
+\usepackage{times, graphicx, amsmath, bm}
+\usepackage{url, multirow, color}
+\usepackage[hidelinks]{hyperref}
+\usepackage[font=small,labelfont=bf]{caption}
+
+\renewcommand{\floatpagefraction}{0.95}
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+
+
+\begin{document}
+\thispagestyle{empty}
+
+\title{Derivation of expression for $h(x_s)$ ($n \leq 4$)}
+\author{Jake Aylmer}
+\maketitle
+
+\normalsize
+\noindent
+The heat flux convergence in the EBM model is given by
+\begin{equation}\label{eq:divphi}
+-\nabla \cdot \bm{\phi} \equiv h(x) = D\frac{\partial}{\partial x}\left( 1 - x^2 \right) \frac{\partial}{\partial x} T(x,x_s)
+\end{equation}
+where
+\begin{equation*}
+T(x, x_s) = \sum_{n \textrm{ even}} P_n(x)T_n(x_s) = \sum_{n \textrm{ even}} P_n(x)\left( \frac{(2n+1)Q(x_s)}{n(n+1)D+B}\int_0^1 P_n(x)S(x)a(x,x_s) dx - \frac{\delta_{0n}A}{B}\right),
+\end{equation*}
+noting that for steady-state solutions $Q=Q(x_s)$. Expanding the Laplacian in equation (\ref{eq:divphi}):
+\begin{align*}
+h(x) &= -2Dx\frac{\partial}{\partial x}\sum_{n\textrm{ even}}P_n(x)T_n(x_s) + D(1-x^2)\frac{\partial^2}{\partial x^2}\sum_{n\textrm{ even}}P_n(x)T_n(x_s) \\
+&= -2Dx\sum_{n\textrm{ even}}T_n(x_s)\frac{\partial P_n}{\partial x} + D(1-x^2)\sum_{n\textrm{ even}}T_n(x_s)\frac{\partial^2P_n}{\partial x^2}.
+\end{align*}
+The order-$m$ derivative of $P_n(x)$ with respect to $x$ is given by
+\begin{equation}
+\frac{\partial^mP_n}{\partial x^m} = (-1)^m(1-x^2)^{-\frac{m}{2}}P_n^m(x)
+\end{equation}
+where $P_n^m(x)$ is the associated Legendre polynomial\footnote{http://mathworld.wolfram.com/AssociatedLegendrePolynomial.html}. Using this leads to
+\begin{equation}
+h(x_s) = \frac{2Dx_s}{\sqrt{1-x_s^2}}\sum_{\substack{n\geq 2, \\ \textrm{even}}}T_n(x_s)P_n^1(x_s) + D\sum_{\substack{n\geq 2, \\ \textrm{even}}}T_n(x_s)P_n^2(x_s).
+\end{equation}
+Now expand for $n\leq 4$, collect $T_2(x_s)$ and $T_4(x_s)$ terms and use
+\begin{align*}
+&P_0(x) = 1\\
+&P_2(x) = \frac{1}{2}(3x^2-1)\\
+&P_4(x) = \frac{1}{8}(35x^4 - 30x^2 + 3)\\
+&P_2^1(x) = -3x\sqrt{1-x^2}\\
+&P_2^2(x) = 3(1-x^2)\\
+&P_4^1(x) = \frac{5}{2}x(3-7x^2)\sqrt{1-x^2}\\
+&P_4^2(x) = \frac{15}{2}(7x^2-1)(1-x^2)
+\end{align*}
+to give
+\begin{equation}\label{eq:intermsofT}
+h(x_s) = -6DP_2(x_s)T_2(x_s) - 20DP_4(x_s)T_4(x_s),
+\end{equation}
+which looks like $-\sum n(n+1)DP_n(x_s)T_n(x_s)$ and this is probably not a coincidence. Next, determine the forms of $T_2(x_s)$ and $T_4(x_s)$. For $T_2$,
+\begin{equation}\label{eq:T2}
+T_2(x_s) = \frac{5Q(x_s)}{6D+B}\left(a_f\int_0^{x_s} f_2(x)dx + a_i\int_{x_s}^{1} f_2(x)dx \right)
+\end{equation}
+where
+\begin{align*}
+f_2(x) &= \frac{1}{2}\left(3x^2-1\right)\left(1+\frac{S_2}{2}\left(3x^2-1\right)\right) \\
+&= \frac{9S_2}{4}x^4 + \frac{3}{2}(1-S_2)x^2 - \frac{2-S_2}{4} \\
+\implies \int f_2(x) \equiv F_2(x) &= \frac{9S_2}{20}x^5 + \frac{1}{2}(1-S_2)x^3 - \frac{2-S_2}{4}x.
+\end{align*}
+Using this in equation (\ref{eq:T2}),
+\begin{align}\label{eq:T2final}
+T_2 &= \frac{5Q(x_s)}{6D+B}\left(a_f(F_2(x_s)-F_2(0)) + a_i(F_2(1)-F_2(x_s))\right) \nonumber \\
+&= \frac{5Q(x_s)}{6D+B}\left(\delta a F_2(x_s) + a_i F_2(1)\right) \nonumber \\
+&= \frac{5Q(x_s)\delta a}{6D+B}\left(\frac{9S_2}{20}x_s^5 + \frac{1-S_2}{2}x_s^3 - \frac{2-S_2}{4}x_s + \frac{a_i}{\delta a}\frac{S_2}{5}\right),
+\end{align}
+where $\delta a = a_f - a_i$. Similarly,
+\begin{equation}\label{eq:T4}
+T_4(x_s) = \frac{9Q(x_s)}{20D+B}\left(a_f\int_0^{x_s} f_4(x)dx + a_i\int_{x_s}^{1} f_4(x)dx \right)
+\end{equation}
+where
+\begin{align*}
+f_4(x) &= \frac{1}{8}\left(35x^4 - 30x^2 + 3\right)\left(1+\frac{S_2}{2}\left(3x^2-1\right)\right) \\
+&= \frac{1}{16}\left(105S_2x^6 + 5(14-25S_2)x^4 + 3(13S_2 - 20)x^2 + 3(2-S_2)\right) \\
+\implies \int f_4(x) \equiv F_4(x) &= \frac{1}{16}\left(15S_2x^7 + (14-25S_2)x^5 + (13S_2-20)x^3 + 3(2-S_2)x\right).
+\end{align*}
+Using this in equation (\ref{eq:T4}),
+\begin{align}\label{eq:T4final}
+T_4 &= \frac{9Q(x_s)}{20D+B}\left(a_f(F_4(x_s)-F_4(0)) + a_i(F_4(1)-F_4(x_s))\right) \nonumber \\
+&= \frac{9Q(x_s)}{20D+B}\left(\delta a F_4(x_s) + a_iF_4(1)\right) \nonumber \\
+&= \frac{9Q(x_s)\delta a}{16(20D+B)}\left(15S_2x_s^7 + (14-25S_2)x_s^5 + (13S_2-20)x_s^3 + 3(2-S_2)x_s\right);
+\end{align}
+note that $F_4(1)=0$.
+%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%
+Finally we require the form of $Q(x_s)$.
+\begin{equation*}
+Q(x_s) = (A+BT_s)\left(B\sum_{n\textrm{ even}}\frac{2n+1}{n(n+1)D+B}P_n(x_s)\int_0^1P_n(x)S(x)a(x,x_s)dx\right)^{-1}
+\end{equation*}
+From here, it can be seen that an explicit representation of $h$ is not practical to derive. It is not a polynomial in $x_s$.
+%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%-%
+\end{document}
