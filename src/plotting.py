@@ -51,7 +51,7 @@ def StabilityPlot(xi, norm_Q_arrays, relative_D, cols=['k']):
     ax.set_xlim([pm.Q_min, pm.Q_max])
     ax.set_ylim([pm.x_min, pm.x_max])
     ax.set_xlabel(r'Normalised solar constant, $Q/Q_0$')
-    ax.set_ylabel(r'Ice-edge position, $y_\mathrm{i}=\sin \phi_\mathrm{i}$')
+    ax.set_ylabel(r'Ice-edge position, $x_\mathrm{i}=\sin \phi_\mathrm{i}$')
     fig.canvas.set_window_title(
         'StabilityPlot' + ('Multiple'*(len(norm_Q_arrays)>1)) )
     return FormatAxis(fig, ax, minorgrid=False)
@@ -67,7 +67,7 @@ def PlotTemperature(x, T, xi):
     ax2.set_xticks( np.sin((np.pi/180)*np.arange(0, 90.1, 10)) )
     ax2.set_xticklabels( np.arange(0, 90, 10) )
     
-    ax1.set_xlabel(r'$y=\sin \phi$')
+    ax1.set_xlabel(r'$x=\sin \phi$')
     ax1.set_ylabel(r'Surface temperature, $T$ ($^\circ$C)')
     ax2.set_xlabel(r'Latitude, $\phi$ (deg)', y=2)
     ax2.tick_params(axis='both', which='both', direction='out')
@@ -87,10 +87,10 @@ def PlotHeatTransport(x, HT, xi):
     xi : float, sine of ice-edge latitude.
     """
     fig, ax = plt.subplots()
-    ax.axvline(xi, linestyle='--', label=r'$y_\mathrm{i}$')
+    ax.axvline(xi, linestyle='--', label=r'$x_\mathrm{i}$')
     ax.plot(x, HT/(1E15), color='k')
     ax.set_xlim([0,1])
-    ax.set_xlabel(r'$y=\sin \phi$')
+    ax.set_xlabel(r'$x=\sin \phi$')
     ax.set_ylabel(r'Poleward Heat Transport (PW)')
     fig.canvas.set_window_title('HeatTransport')
     return FormatAxis(fig, ax, minorgrid=False)
@@ -108,10 +108,10 @@ def PlotHeatFluxConvergence(x, HFC, xi):
     """
     fig, ax = plt.subplots()
     ax.axhline(0, color=[.2,.2,.2], linewidth=0.8)
-    ax.axvline(xi, linestyle='--', label=r'$y_\mathrm{i}')
+    ax.axvline(xi, linestyle='--', label=r'$x_\mathrm{i}')
     ax.plot(x, HFC, color='k')
     ax.set_xlim([0,1])
-    ax.set_xlabel(r'$y=\sin \phi$')
+    ax.set_xlabel(r'$x=\sin \phi$')
     ax.set_ylabel(r'Heat flux convergence (W m$^{-2}$)')
     fig.canvas.set_window_title('HeatFluxConvergence')
     return FormatAxis(fig, ax, minorgrid=False)
@@ -153,7 +153,7 @@ def PlotHFCIceEdge(relative_D=np.array([0.75,1.0,1.25]), smooth_coalbedo=False,
     for j in xrange(1, len(relative_D)):
         ax.plot(xi, HFC[j], label=r'$D/D_0=%.2f$' % relative_D[j])
     ax.set_xlim([0,1])
-    ax.set_xlabel(r'Ice edge position, $y_\mathrm{i}=\sin\phi_\mathrm{i}$')
+    ax.set_xlabel(r'Ice edge position, $x_\mathrm{i}=\sin\phi_\mathrm{i}$')
     ax.set_ylabel(r'Heat flux convergence (W m$^{-2}$)')
     ax.legend(loc='upper left', fontsize=16)
     fig.canvas.set_window_title(
