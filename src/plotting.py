@@ -75,43 +75,59 @@ def PlotTemperature(x, T, xi):
     return FormatAxis(fig, ax1, minorgrid=False)
 
 
-def PlotHeatTransport(x, HT, xi):
+def PlotHeatTransport(x, HT, xi, latitude_axis=False):
     """Plot the zonally integrated heat transport in PW over the hemisphere for
     a given solution to the EBM (note that heat transports are input to this
     function in W, which are then converted to PW automatically). Returns the
     MatPlotLib figure and axis objects (fig, ax).
     
     --Args--
-    x  : (NumPy) array, containing x-coordinates between 0 and 1.
-    HT : (NumPy) array, containing Heat transport [W] at each x coordinate.
-    xi : float, sine of ice-edge latitude.
+    x               : (NumPy) array, containing x-coordinates between 0 and 1.
+    HT              : (NumPy) array, containing Heat transport [W] at each x
+                      coordinate.
+    xi              : float, sine of ice-edge latitude.
+    (latitude_axis) : bool, whether to convert to latitude (deg).
     """
     fig, ax = plt.subplots()
-    ax.axvline(xi, linestyle='--', label=r'$x_\mathrm{i}$')
+    if latitude_axis:
+        x = np.degrees(np.arcsin(x))
+        xi = np.degrees(np.arcsin(xi))
+        ax.set_xlim([0,90])
+        ax.set_xlabel(r'Latitude, $\phi$ ($^\circ$)')
+    else:
+        ax.set_xlim([0,1])
+        ax.set_xlabel(r'$x=\sin \phi$')
+    ax.axvline(xi, linestyle='--', label=r'Ice edge')
     ax.plot(x, HT/(1E15), color='k')
-    ax.set_xlim([0,1])
-    ax.set_xlabel(r'$x=\sin \phi$')
     ax.set_ylabel(r'Poleward Heat Transport (PW)')
     fig.canvas.set_window_title('HeatTransport')
     return FormatAxis(fig, ax, minorgrid=False)
 
 
-def PlotHeatFluxConvergence(x, HFC, xi):
+def PlotHeatFluxConvergence(x, HFC, xi, latitude_axis=False):
     """Plot the heat flux convergence (HFC) [W m^-2] over the hemisphere for a
     given solution to the EBM. Returns the MatPlotLib figure and axis objects
     (fig, ax).
     
     --Args--
-    x   : (NumPy) array, containing x-coordinates between 0 and 1.
-    HFC : (NumPy) array, containing heat flux convergences [W m^-2] at each x.
-    xi  : float, sine of ice-edge latitude.
+    x               : (NumPy) array, containing x-coordinates between 0 and 1.
+    HFC             : (NumPy) array, containing heat flux convergences [W m^-2]
+                      at each x.
+    xi              : float, sine of ice-edge latitude.
+    (latitude_axis) : bool, whether to convert to latitude (deg).
     """
     fig, ax = plt.subplots()
     ax.axhline(0, color=[.2,.2,.2], linewidth=0.8)
-    ax.axvline(xi, linestyle='--', label=r'$x_\mathrm{i}')
+    if latitude_axis:
+        x = np.degrees(np.arcsin(x))
+        xi = np.degrees(np.arcsin(xi))
+        ax.set_xlim([0,90])
+        ax.set_xlabel(r'Latitude, $\phi$ ($^\circ$)')
+    else:
+        ax.set_xlim([0,1])
+        ax.set_xlabel(r'$x=\sin \phi$')
+    ax.axvline(xi, linestyle='--', label=r'Ice edge')
     ax.plot(x, HFC, color='k')
-    ax.set_xlim([0,1])
-    ax.set_xlabel(r'$x=\sin \phi$')
     ax.set_ylabel(r'Heat flux convergence (W m$^{-2}$)')
     fig.canvas.set_window_title('HeatFluxConvergence')
     return FormatAxis(fig, ax, minorgrid=False)
