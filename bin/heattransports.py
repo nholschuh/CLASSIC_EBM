@@ -14,7 +14,7 @@ from src import parameters as pm, analytics as an
 from src import plotting as pl, fileIO
 
 
-def main(xi=0.9, smooth_coalbedo=False, latitude_axis=False):
+def main(xi=0.95, smooth_coalbedo=False, latitude_axis=False):
     
     x = np.arange(0.0, 1.001, 0.001)
     HT = np.zeros(len(x))
