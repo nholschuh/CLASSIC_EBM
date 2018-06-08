@@ -23,7 +23,7 @@ def SaveFigures(figures, subdir, ext='.pdf'):
         os.mkdir(dirname)
     passall = False
     for f in figures:
-        filename_to_save = str(f.canvas.manager.window.windowTitle()) + ext
+        filename_to_save = str(f.canvas.manager.window.wm_title()) + ext
         if passall:
             f.savefig(os.path.join(dirname, filename_to_save))
         else:

@@ -54,7 +54,8 @@ def StabilityPlot(xi, norm_Q_arrays, relative_D, cols=['k']):
     ax.set_ylabel(r'Ice-edge position, $x_\mathrm{i}=\sin \phi_\mathrm{i}$')
     fig.canvas.set_window_title(
         'StabilityPlot' + ('Multiple'*(len(norm_Q_arrays)>1)) )
-    return FormatAxis(fig, ax, minorgrid=False)
+    fig.tight_layout()
+    return fig, ax
 
 
 def PlotTemperature(x, T, xi):
@@ -70,9 +71,11 @@ def PlotTemperature(x, T, xi):
     ax1.set_xlabel(r'$x=\sin \phi$')
     ax1.set_ylabel(r'Surface temperature, $T$ ($^\circ$C)')
     ax2.set_xlabel(r'Latitude, $\phi$ (deg)', y=2)
-    ax2.tick_params(axis='both', which='both', direction='out')
     ax2.tick_params(axis='both', which='major', labelsize=17, pad=0)
-    return FormatAxis(fig, ax1, minorgrid=False)
+    ax2.grid(False, which='both')
+    ax2.minorticks_off()
+    fig.tight_layout()
+    return fig, ax1
 
 
 def PlotHeatTransport(x, HT, xi, latitude_axis=False):
@@ -101,7 +104,8 @@ def PlotHeatTransport(x, HT, xi, latitude_axis=False):
     ax.plot(x, HT/(1E15), color='k')
     ax.set_ylabel(r'Poleward Heat Transport (PW)')
     fig.canvas.set_window_title('HeatTransport')
-    return FormatAxis(fig, ax, minorgrid=False)
+    fig.tight_layout()
+    return fig, ax
 
 
 def PlotHeatFluxConvergence(x, HFC, xi, latitude_axis=False):
@@ -130,7 +134,8 @@ def PlotHeatFluxConvergence(x, HFC, xi, latitude_axis=False):
     ax.plot(x, HFC, color='k')
     ax.set_ylabel(r'Heat flux convergence (W m$^{-2}$)')
     fig.canvas.set_window_title('HeatFluxConvergence')
-    return FormatAxis(fig, ax, minorgrid=False)
+    fig.tight_layout()
+    return fig, ax
 
 
 def PlotHFCIceEdge(relative_D=np.array([0.75,1.0,1.25]), smooth_coalbedo=False,
@@ -171,50 +176,56 @@ def PlotHFCIceEdge(relative_D=np.array([0.75,1.0,1.25]), smooth_coalbedo=False,
     ax.set_xlim([0,1])
     ax.set_xlabel(r'Ice edge position, $x_\mathrm{i}=\sin\phi_\mathrm{i}$')
     ax.set_ylabel(r'Heat flux convergence (W m$^{-2}$)')
-    ax.legend(loc='upper left', fontsize=16)
+    ax.legend(loc='upper left')
     fig.canvas.set_window_title(
         'HeatFluxConvergenceIceEdge' + '_Multiple'*(len(relative_D)>1))
-    return FormatAxis(fig, ax, minorgrid=False)
+    fig.tight_layout()
+    return fig, ax
 
 
 ###############################################################################
-
-def FormatAxis(fig, ax, ticksize=18, tickpad=8, gridon=True, minorgrid=True):
-    """Set the layout and formatting of the plot on axis ax belonging to figure
-    object fig.
-    
-    --Args--
-    fig         : MatPlotLib figure object.
-    ax          : MatPlotLib axis object associated with fig.
-    (ticksize)  : int, font-size for axis tick labels.
-    (tickpad)   : int, padding for the axis tick labels (see MatPlotLib).
-    (gridon)    : boolean, whether to set the grid on.
-    (minorgrid) : boolean, whether to show minor grid-lines.
-    """
-    ax.minorticks_on()
-    ax.tick_params(axis='both', which='both', direction='out')
-    ax.tick_params(axis='both', which='major', labelsize=ticksize, pad=tickpad)
-    if gridon:
-        if minorgrid:
-            ax.grid(which='minor', linestyle='-', color=[.92, .92, .92])
-        ax.grid(which='major', linestyle='-', color=[.75, .75, .75])
-    ax.set_axisbelow(True)
-    fig.tight_layout()
-    return fig, ax
 
 
 def SetRCParams():
     """Set default MatPlotLib formatting styles (rcParams) which will be set
     automatically for any plotting method.
     """
-    mpl.rcParams['font.sans-serif'] = 'Calibri' #set the font for sans-serif style
-    mpl.rcParams['font.family'] = 'sans-serif' #choose the sans-serif font style
-    mpl.rcParams['mathtext.fontset'] = 'custom' #allow customisation of maths font
-    mpl.rcParams['mathtext.rm'] = 'sans' #maths roman font in sans-serif format
-    mpl.rcParams['mathtext.it'] = 'sans:italic' #maths italic font
-    mpl.rcParams['mathtext.default'] = 'it' #maths in italic by default
-    mpl.rcParams['axes.titlesize'] = 20 #plt.title font size
-    mpl.rcParams['axes.labelsize'] = 18 #x/y axis label font size
-    mpl.rcParams['savefig.format'] = 'pdf' #default format to save to
-    mpl.rcParams['lines.linewidth'] = 1.5 #default plot linewidth (thickness)
+    # FONTS (NOTE: SOME OF THESE ARE SET-ORDER DEPENDENT):
+    mpl.rcParams['font.sans-serif'] = 'Calibri' #Set font for sans-serif style
+    mpl.rcParams['font.family'] = 'sans-serif' #Choose sans-serif font style
+    mpl.rcParams['mathtext.fontset'] = 'custom' #Allow customising maths fonts
+    mpl.rcParams['mathtext.rm'] = 'sans' #Maths roman font in sans-serif format
+    mpl.rcParams['mathtext.it'] = 'sans:italic' #Maths italic font
+    mpl.rcParams['mathtext.default'] = 'it' #Maths in italic by default
+    
+    # PLOT ELEMENT PROPERTIES:
+    mpl.rcParams['lines.linewidth'] = 1.5 #Default plot linewidth (thickness)
+    mpl.rcParams['lines.markersize'] = 4 #Default marker size (pts)
+    mpl.rcParams['lines.markeredgewidth'] = 0 #Default marker edge width (pts)
+    
+    # LABEL PROPERTIES:
+    mpl.rcParams['axes.titlesize'] = 20 #Title font size (pts)
+    mpl.rcParams['axes.labelsize'] = 19 #Axis label font sizes (pts)
+    mpl.rcParams['xtick.labelsize'] = 18 #X-tick label font size (pts)
+    mpl.rcParams['ytick.labelsize'] = 18 #Y-tick label font size (pts)
+    
+    # GRID PROPERTIES:
+    mpl.rcParams['axes.grid'] = True #Major grid on by default
+    mpl.rcParams['grid.color'] = 'bfbfbf' #Grid line color
+    mpl.rcParams['xtick.minor.visible'] = True #X-minor ticks on by default
+    mpl.rcParams['ytick.minor.visible'] = True #Y-minor ticks on by default
+    mpl.rcParams['xtick.major.pad'] = 8 #X-major tick padding
+    mpl.rcParams['ytick.major.pad'] = 8 #Y-major tick padding
+    mpl.rcParams['axes.axisbelow'] = True
+    
+    # LEGEND PROPERTIES:
+    mpl.rcParams['legend.fancybox'] = False #Whether to use a rounded box
+    mpl.rcParams['legend.fontsize'] = 16 #Legend label font size (pts)
+    mpl.rcParams['legend.framealpha'] = 1 #Legend alpha (transparency)
+    mpl.rcParams['legend.edgecolor'] = '#000000' #
+    
+    # GENERAL FIGURE PROPERTIES
+    mpl.rcParams['figure.figsize'] = 8, 6 #Figure window size (inches)
+    mpl.rcParams['savefig.format'] = 'pdf' #Default format to save to
+    
     pass

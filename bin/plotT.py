@@ -25,7 +25,7 @@ def main(xi=np.sin(70*np.pi/180), smooth_coalbedo=False):
     
     print "Using %s-coalbedo..." % ('smoothed' if smooth_coalbedo else 
         'step-function')
-    print len(Tn)
+    
     for n in xrange(0, pm.nmax+2, 2):
         Tn[n//2] = an.Tn(n, xi, Q=Q, smooth_coalbedo=smooth_coalbedo)
     
