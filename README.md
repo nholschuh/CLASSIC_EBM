@@ -12,4 +12,4 @@ where the coordinate _x_ is the sine of latitude, _T_ is the zonally-averaged su
 ## Dependencies
   * Python 2.7.14
   * NumPy 1.14.3
-  * MatPlotLib 1.4.3
+  * MatPlotLib 2.2.2
